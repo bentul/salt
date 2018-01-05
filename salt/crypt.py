@@ -692,6 +692,9 @@ class SAuth(object):
                 return 'retry'
             raise SaltClientError('Attempt to authenticate with the salt master failed')
 
+        if not isinstance(payload, dict):
+            log.error('Sign-in attempt failed: %s', payload)
+            raise SaltClientError('Attempt to authenticate with the salt master blocked by security reason!')
         if 'load' in payload:
             if 'ret' in payload['load']:
                 if not payload['load']['ret']:
